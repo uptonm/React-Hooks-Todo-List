@@ -1,6 +1,6 @@
 import React from 'react';
 import Task from './Task';
-import getTodos from '../services/getTodos';
+import { getTodos, postTodo, putTodo } from '../services/todoService';
 
 class App extends React.Component {
   state = {
@@ -11,21 +11,21 @@ class App extends React.Component {
       dueDate: ''
     },
     filters: {
-      showComplete: ''
+      showCompleted: ''
     }
   };
   componentDidMount = async () => {
     const todos = await getTodos();
     this.setState({ tasks: todos.data });
   };
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     if (this.state.input.title.length > 0) {
       const { title, importance, dueDate } = this.state.input;
       this.setState({
         tasks: [
           ...this.state.tasks,
-          { title, complete: false, dueDate: new Date(dueDate), importance: importance }
+          { title, completed: false, dueDate: new Date(dueDate), importance: importance }
         ],
         input: {
           title: '',
@@ -33,6 +33,7 @@ class App extends React.Component {
           dueDate: ''
         }
       });
+      await postTodo({ title, importance, dueDate });
     }
   };
   handleInput = e => {
@@ -59,46 +60,48 @@ class App extends React.Component {
       }
     });
   };
-  handleShowComplete = e => {
+  handleShowCompleted = e => {
     this.setState({
       filters: {
         ...this.state.filters,
-        showComplete: !this.state.filters.showComplete
+        showCompleted: !this.state.filters.showCompleted
       }
     });
   };
-  toggleComplete = index => {
+  togglecompleted = async index => {
     let tasks = this.state.tasks;
-    tasks[index].complete = !tasks[index].complete;
+    tasks[index].completed = !tasks[index].completed;
     this.setState({ tasks });
+    console.log(tasks[index]._id);
+    await putTodo(tasks[index]._id, { completed: tasks[index].completed });
   };
   renderTasks = () => {
     if (this.state.tasks.length > 0) {
       return this.state.tasks.map((task, index) => {
-        if (this.state.filters.showComplete) {
+        if (this.state.filters.showCompleted) {
           return (
             <Task
               key={index}
               index={index}
               title={task.title}
-              complete={task.complete}
+              completed={task.completed}
               dueDate={task.dueDate}
               importance={task.importance}
-              toggleComplete={this.toggleComplete}
+              toggleComplete={this.togglecompleted}
             />
           );
         } else {
-          return task.complete ? (
+          return task.completed ? (
             ''
           ) : (
             <Task
               key={index}
               index={index}
               title={task.title}
-              complete={task.complete}
+              completed={task.completed}
               dueDate={task.dueDate}
               importance={task.importance}
-              toggleComplete={this.toggleComplete}
+              toggleComplete={this.togglecompleted}
             />
           );
         }
@@ -149,10 +152,10 @@ class App extends React.Component {
           </form>
           <button
             className="show-complete-btn"
-            value={this.state.filters.showComplete}
-            onClick={this.handleShowComplete}
+            value={this.state.filters.showCompleted}
+            onClick={this.handleShowCompleted}
           >
-            {!this.state.filters.showComplete ? 'Show Completed Tasks' : 'Hide Completed Tasks'}
+            {!this.state.filters.showCompleted ? 'Show Completed Tasks' : 'Hide Complete Tasks'}
           </button>
           <table>
             <tr style={{ backgroundColor: '#9AD1AB', height: '50px' }}>

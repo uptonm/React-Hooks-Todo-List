@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const Task = ({ index, title, dueDate, importance, complete, toggleComplete }) => {
-  const [isComplete, setIsComplete] = useState(complete || false);
+const Task = ({ index, title, dueDate, importance, completed, toggleComplete }) => {
+  const [isCompleted, setIsCompleted] = useState(completed || false);
   const date = new Date(dueDate) || false;
   const overdue = date <= new Date();
 
   const taskStyle = {
-    textDecoration: isComplete ? 'line-through' : '',
-    color: isComplete ? 'grey' : overdue ? 'red' : 'black',
+    textDecoration: isCompleted ? 'line-through' : '',
+    color: isCompleted ? 'grey' : overdue ? 'red' : 'black',
     transition: '0.3s'
   };
 
@@ -42,7 +42,7 @@ const Task = ({ index, title, dueDate, importance, complete, toggleComplete }) =
   };
 
   const renderCompleteButton = () => {
-    switch (isComplete) {
+    switch (isCompleted) {
       case true:
         return (
           <button className="complete task" onClick={toggleCompleted}>
@@ -60,9 +60,9 @@ const Task = ({ index, title, dueDate, importance, complete, toggleComplete }) =
   };
 
   const toggleCompleted = () => {
-    setIsComplete(!isComplete);
+    setIsCompleted(!isCompleted);
     toggleComplete(index);
-    complete = !complete;
+    completed = !completed;
   };
 
   return (
