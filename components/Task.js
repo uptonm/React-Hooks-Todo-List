@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Task = ({title, dueDate, importance, complete}) => {
+const Task = ({index, title, dueDate, importance, complete, toggleComplete}) => {
   const [isComplete, setIsComplete] = useState(complete || false);
   const date = new Date(dueDate) || false;
 
@@ -44,11 +44,11 @@ const Task = ({title, dueDate, importance, complete}) => {
     switch(isComplete) {
       case true:
         return (
-          <button className="complete task" onClick={this.toggleCompleted}><i class="fas fa-check-square"></i></button>
+          <button className="complete task" onClick={this.toggleCompleted}><i className="fas fa-check-square"></i></button>
         );
       case false:
         return (
-          <button className="incomplete task" onClick={this.toggleCompleted}><i class="far fa-window-close"></i></button>
+          <button className="incomplete task" onClick={this.toggleCompleted}><i className="far fa-window-close"></i></button>
         )
       default:
     }
@@ -56,6 +56,8 @@ const Task = ({title, dueDate, importance, complete}) => {
 
   this.toggleCompleted = () => {
     setIsComplete(!isComplete);
+    toggleComplete(index); 
+    complete = !complete;
   }
 
   return (

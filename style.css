@@ -78,6 +78,10 @@ table {
   margin: 0.5em 1em;
 }
 
+th {
+  text-align: center
+}
+
 .task-title {
   font-weight: 400;
 }
@@ -149,4 +153,9 @@ h1 {
 
 *:focus {
   outline: none;
+}
+
+.show-complete-btn {
+  margin: 0 auto;
+  border: 0;
 }
