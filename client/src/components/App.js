@@ -5,7 +5,7 @@ class App extends React.Component {
   state = {
     tasks: [
       {
-        title: 'Sample',
+        title: 'Finish this app',
         complete: true,
         dueDate: new Date(),
         importance: 2
