@@ -86,7 +86,6 @@ class App extends React.Component {
           </select>
           <button className={this.state.input.title.length > 0 ? "add-task active" : "add-task"} type="submit"><i className="fas fa-plus"></i></button>
         </form>
-
         <button className="show-complete-btn" value={this.state.filters.showComplete} onClick={this.handleShowComplete}>
           {!this.state.filters.showComplete ? 'Show Completed Tasks' : 'Hide Completed Tasks'}
         </button>
@@ -100,7 +99,6 @@ class App extends React.Component {
             {this.renderTasks()}
           </tbody>
         </table>
-
       </div>
     </div>
   )
