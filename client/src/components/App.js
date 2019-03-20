@@ -1,16 +1,10 @@
 import React from 'react';
 import Task from './Task';
+import getTodos from '../services/getTodos';
 
 class App extends React.Component {
   state = {
-    tasks: [
-      {
-        title: 'Finish this app',
-        complete: true,
-        dueDate: new Date(),
-        importance: 2
-      }
-    ],
+    tasks: [],
     input: {
       title: '',
       importance: '',
@@ -19,6 +13,10 @@ class App extends React.Component {
     filters: {
       showComplete: ''
     }
+  };
+  componentDidMount = async () => {
+    const todos = await getTodos();
+    this.setState({ tasks: todos.data });
   };
   handleSubmit = e => {
     e.preventDefault();
@@ -75,35 +73,39 @@ class App extends React.Component {
     this.setState({ tasks });
   };
   renderTasks = () => {
-    return this.state.tasks.map((task, index) => {
-      if (this.state.filters.showComplete) {
-        return (
-          <Task
-            key={index}
-            index={index}
-            title={task.title}
-            complete={task.complete}
-            dueDate={task.dueDate}
-            importance={task.importance}
-            toggleComplete={this.toggleComplete}
-          />
-        );
-      } else {
-        return task.complete ? (
-          ''
-        ) : (
-          <Task
-            key={index}
-            index={index}
-            title={task.title}
-            complete={task.complete}
-            dueDate={task.dueDate}
-            importance={task.importance}
-            toggleComplete={this.toggleComplete}
-          />
-        );
-      }
-    });
+    if (this.state.tasks.length > 0) {
+      return this.state.tasks.map((task, index) => {
+        if (this.state.filters.showComplete) {
+          return (
+            <Task
+              key={index}
+              index={index}
+              title={task.title}
+              complete={task.complete}
+              dueDate={task.dueDate}
+              importance={task.importance}
+              toggleComplete={this.toggleComplete}
+            />
+          );
+        } else {
+          return task.complete ? (
+            ''
+          ) : (
+            <Task
+              key={index}
+              index={index}
+              title={task.title}
+              complete={task.complete}
+              dueDate={task.dueDate}
+              importance={task.importance}
+              toggleComplete={this.toggleComplete}
+            />
+          );
+        }
+      });
+    } else {
+      return;
+    }
   };
 
   render() {
