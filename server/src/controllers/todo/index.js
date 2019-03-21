@@ -65,6 +65,8 @@ exports.putTodo = async (req, res) => {
   }
 
   let todo = {};
+
+  console.log(req.body);
   if (errors.length === 0) {
     if (req.body.title) {
       todo.title = req.body.title;
@@ -75,7 +77,7 @@ exports.putTodo = async (req, res) => {
     if (req.body.importance) {
       todo.importance = req.body.importance;
     }
-    if (req.body.completed) {
+    if (typeof req.body.completed === 'boolean') {
       todo.completed = req.body.completed;
     }
     await todos.findByIdAndUpdate(req.params.id, { ...todo });

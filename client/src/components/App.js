@@ -72,7 +72,7 @@ class App extends React.Component {
     let tasks = this.state.tasks;
     tasks[index].completed = !tasks[index].completed;
     this.setState({ tasks });
-    console.log(tasks[index]._id);
+    console.log({ completed: tasks[index].completed });
     await putTodo(tasks[index]._id, { completed: tasks[index].completed });
   };
   renderTasks = () => {
