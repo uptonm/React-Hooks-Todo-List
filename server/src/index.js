@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const colors = require('colors');
 const morgan = require('morgan');
+const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -26,6 +27,11 @@ app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', require('./routes/todo.routes'));
+app.use(express.static(__dirname + '/../build'));
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname + '/../build/index.html'));
+});
 
 app.listen(process.env.PORT || 8000, err => {
   if (err) {

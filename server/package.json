@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src"
+    "dev": "nodemon ./src",
+    "build:prod": "cd ../client && npm run build && rm -rf ../server/build && mv ./build ../server/build",
+    "serve:prod": "npm run build:prod && node ./src"
   },
   "keywords": [],
   "author": "",
